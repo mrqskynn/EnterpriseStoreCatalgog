@@ -1,0 +1,82 @@
+@model EnterpriseStore.Web.Entities.Product
+
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="d-flex align-items-center gap-2 mb-3">
+            <a asp-action="Index" class="btn btn-outline-secondary btn-sm rounded-circle p-2" title="Back">
+                <i class="bi bi-arrow-left"></i>
+            </a>
+            <h3 class="fw-bold mb-0 text-dark">Product Details</h3>
+        </div>
+
+        <div class="card shadow border-0 overflow-hidden">
+            <div class="card-header bg-info text-white py-3 px-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-info-circle-fill fs-5"></i>
+                        <h5 class="mb-0 fw-bold">Item #@Model.Id</h5>
+                    </div>
+                    <code class="bg-white text-info px-2 py-1 rounded fw-bold">@Model.SKU</code>
+                </div>
+            </div>
+            <div class="card-body p-4">
+                <div class="mb-4">
+                    <span class="text-muted small text-uppercase fw-semibold">Product Name</span>
+                    <h3 class="fw-bold text-dark mt-1">@Model.Name</h3>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-sm-6">
+                        <div class="p-3 bg-light rounded-3 border">
+                            <span class="text-muted small text-uppercase fw-semibold d-block">Unit Price</span>
+                            <span class="fs-3 fw-bold text-success">@Model.Price.ToString("C")</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="p-3 bg-light rounded-3 border">
+                            <span class="text-muted small text-uppercase fw-semibold d-block">Stock Status</span>
+                            <div class="mt-1">
+                                @if (Model.StockQuantity > 10)
+                                {
+                                    <span class="badge bg-success-subtle text-success border border-success px-3 py-2 rounded-pill fs-6">
+                                        <i class="bi bi-check-circle-fill me-1"></i> @Model.StockQuantity units in stock
+                                    </span>
+                                }
+                                else if (Model.StockQuantity > 0)
+                                {
+                                    <span class="badge bg-warning-subtle text-warning border border-warning px-3 py-2 rounded-pill fs-6">
+                                        <i class="bi bi-exclamation-triangle-fill me-1"></i> @Model.StockQuantity units (Low Stock)
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger-subtle text-danger border border-danger px-3 py-2 rounded-pill fs-6">
+                                        <i class="bi bi-x-circle-fill me-1"></i> Out of Stock
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                    <a asp-action="Index" class="btn btn-light px-4">
+                        <i class="bi bi-chevron-left me-1"></i> Back to Catalog
+                    </a>
+                    <div class="d-flex gap-2">
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning px-3 d-flex align-items-center gap-1">
+                            <i class="bi bi-pencil-square"></i> Edit
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger px-3 d-flex align-items-center gap-1">
+                            <i class="bi bi-trash3"></i> Delete
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

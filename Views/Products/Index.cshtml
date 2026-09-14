@@ -1,0 +1,165 @@
+@model IEnumerable<EnterpriseStore.Web.Entities.Product>
+
+@{
+    ViewData["Title"] = "Product Catalog";
+    var totalProducts = Model.Count();
+    var inStockCount = Model.Count(p => p.StockQuantity > 10);
+    var lowStockCount = Model.Count(p => p.StockQuantity > 0 && p.StockQuantity <= 10);
+    var outOfStockCount = Model.Count(p => p.StockQuantity == 0);
+}
+
+<div class="row align-items-center mb-4 g-3">
+    <div class="col-md-7">
+        <h2 class="fw-bold mb-1 text-dark">
+            <i class="bi bi-box-seam text-primary me-2"></i>Product Catalog
+        </h2>
+        <p class="text-muted mb-0">Browse and manage inventory items in real-time.</p>
+    </div>
+    <div class="col-md-5 text-md-end">
+        <a asp-action="Create" class="btn btn-primary px-4 py-2 shadow-sm d-inline-flex align-items-center gap-2">
+            <i class="bi bi-plus-circle-fill fs-5"></i>
+            <span>Add New Product</span>
+        </a>
+    </div>
+</div>
+
+<!-- Stat Metric Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+        <div class="card p-3 border-start border-4 border-primary">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <span class="text-muted text-uppercase fw-semibold small">Total Items</span>
+                    <h3 class="fw-bold text-dark mt-1 mb-0">@totalProducts</h3>
+                </div>
+                <div class="bg-primary-subtle text-primary p-3 rounded-circle fs-4">
+                    <i class="bi bi-boxes"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card p-3 border-start border-4 border-success">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <span class="text-muted text-uppercase fw-semibold small">In Stock</span>
+                    <h3 class="fw-bold text-success mt-1 mb-0">@inStockCount</h3>
+                </div>
+                <div class="bg-success-subtle text-success p-3 rounded-circle fs-4">
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card p-3 border-start border-4 border-warning">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <span class="text-muted text-uppercase fw-semibold small">Low Stock</span>
+                    <h3 class="fw-bold text-warning mt-1 mb-0">@lowStockCount</h3>
+                </div>
+                <div class="bg-warning-subtle text-warning p-3 rounded-circle fs-4">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card p-3 border-start border-4 border-danger">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <span class="text-muted text-uppercase fw-semibold small">Out of Stock</span>
+                    <h3 class="fw-bold text-danger mt-1 mb-0">@outOfStockCount</h3>
+                </div>
+                <div class="bg-danger-subtle text-danger p-3 rounded-circle fs-4">
+                    <i class="bi bi-x-circle-fill"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="card text-center py-5 shadow-sm border-0">
+        <div class="card-body">
+            <i class="bi bi-folder-x text-muted display-3 mb-3"></i>
+            <h4 class="fw-bold text-dark">No Products Found</h4>
+            <p class="text-muted mx-auto" style="max-width: 400px;">Your inventory database is currently empty. Get started by adding your first product catalog entry.</p>
+            <a asp-action="Create" class="btn btn-primary px-4 mt-2">
+                <i class="bi bi-plus-lg me-1"></i> Create First Product
+            </a>
+        </div>
+    </div>
+}
+else
+{
+    <div class="card shadow-sm border-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light border-bottom">
+                    <tr class="text-uppercase small text-muted">
+                        <th scope="col" style="width: 80px;" class="ps-4">ID</th>
+                        <th scope="col" style="width: 150px;">SKU</th>
+                        <th scope="col">Product Name</th>
+                        <th scope="col" style="width: 140px;">Price</th>
+                        <th scope="col" style="width: 170px;">Stock Status</th>
+                        <th scope="col" style="width: 220px;" class="text-end pe-4">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in Model)
+                    {
+                        <tr>
+                            <td class="ps-4">
+                                <span class="badge bg-light text-muted border">#@product.Id</span>
+                            </td>
+                            <td>
+                                <code class="fw-semibold text-primary px-2 py-1 bg-light rounded border">@product.SKU</code>
+                            </td>
+                            <td>
+                                <div class="fw-bold text-dark fs-6">@product.Name</div>
+                            </td>
+                            <td>
+                                <span class="fw-bold text-success fs-6">@product.Price.ToString("C")</span>
+                            </td>
+                            <td>
+                                @if (product.StockQuantity > 10)
+                                {
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill">
+                                        <i class="bi bi-dot"></i> @product.StockQuantity in stock
+                                    </span>
+                                }
+                                else if (product.StockQuantity > 0)
+                                {
+                                    <span class="badge bg-warning-subtle text-warning border border-warning-subtle px-3 py-2 rounded-pill">
+                                        <i class="bi bi-exclamation-circle me-1"></i> @product.StockQuantity low stock
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 py-2 rounded-pill">
+                                        <i class="bi bi-x-circle me-1"></i> Out of stock
+                                    </span>
+                                }
+                            </td>
+                            <td class="text-end pe-4">
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <a asp-action="Details" asp-route-id="@product.Id" class="btn btn-outline-info" title="View Details">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a asp-action="Edit" asp-route-id="@product.Id" class="btn btn-outline-warning" title="Edit Product">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@product.Id" class="btn btn-outline-danger" title="Delete Product">
+                                        <i class="bi bi-trash3"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "x5tVeFC//PFAaK5iEnDNmG7oHmgbZ/os2dAqo42RWu4=",
+  "Source": "EnterpriseStore.Web",
+  "BasePath": "_content/EnterpriseStore.Web",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

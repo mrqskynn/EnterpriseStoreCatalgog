@@ -1,0 +1,8 @@
+{
+  "dotnet.defaultSolution": "EnterpriseStore.sln",
+  "dotnet.server.useServerGC": false,
+  "dotnet.server.useOmnisharp": false,
+  "csharp.showOmnisharpLogOnError": false,
+  "omnisharp.enableLspDriver": true,
+  "csharp.suppressDotnetInstallWarning": true
+}
